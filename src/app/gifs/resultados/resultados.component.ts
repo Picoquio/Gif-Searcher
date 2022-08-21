@@ -1,15 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { GifsService } from '../services/gifs.service';
 
 @Component({
   selector: 'app-resultados',
   templateUrl: './resultados.component.html',
  
 })
-export class ResultadosComponent implements OnInit {
+export class ResultadosComponent {
 
-  constructor() { }
-
-  ngOnInit(): void {
+  //obtenemos el array resultados
+  get resultados () {
+    return this.gifsService.resultados
   }
+  
+  //inyectamos el servicio
+  constructor( private gifsService: GifsService) { }
 
 }
