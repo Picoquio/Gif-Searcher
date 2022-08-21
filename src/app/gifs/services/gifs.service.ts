@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -5,28 +6,43 @@ import { Injectable } from '@angular/core';
 })
 export class GifsService {
 
+
+  //api_key de giphy
+  private apiKey: string = 'FLtmROL8EJML4jf0tud27tQWia4aLmeu'
+
+  //inyectamos HttpClient
+  constructor(private http: HttpClient) { }
+
+
+
+
   private _historial: string[] = []
 
   get historial() {
     return [...this._historial]
   }
 
-  buscarGifs(query:string) {
+  buscarGifs(query: string) {
 
     query = query.trim().toLowerCase(); // los argumentos recibos serán en minúscula.
+    
+    // evitamos duplicados
+    if (!this._historial.includes(query)) {
+      this._historial.unshift(query)
 
-    if (this._historial.includes(query)) {
-      return /* si lo ingresado en la caja de texto ya se encuentra en el array, 
-      corta la ejecución de la función */
+      //asigna a this._historial el valor de los 10 primeros elementos eliminados
+      this._historial = this._historial.splice(0, 10)
     }
 
-    this._historial.unshift(query)
-    
-    //asigna a this._historial el valor de los 10 primeros elementos eliminados
-    this._historial = this._historial.splice(0,10)
-    
-    
-    
+    this.http.get('https://api.giphy.com/v1/gifs/search?api_key=FLtmROL8EJML4jf0tud27tQWia4aLmeu&q=dragon ball z&limit=10')
+      .subscribe((resp:any) => {
+        console.log(resp.data);
+        
+      })
+
+
+
+
   }
 
 }
