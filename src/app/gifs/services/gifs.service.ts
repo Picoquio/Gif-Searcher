@@ -53,17 +53,13 @@ export class GifsService {
     }
 
 
-    
+    //genera un objeto que luego será utilizado en la petición GET
     const params = new HttpParams()
         .set('api_key', this.apiKey)
         .set('limit', '10')
         .set('q', query);
 
         
-        
-    console.log(params.toString());
-    
-    
     //petición GET http
     this.http.get<SearchGifsResponse>(`${this.servicioUrl}/search`, { params })
       .subscribe((resp) => {
