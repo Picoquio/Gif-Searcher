@@ -20,12 +20,18 @@ export class GifsService {
 
 
   //inyectamos HttpClient
-  constructor(private http: HttpClient) { 
-    
-    // si en el localStorage existe la key 'historial', al array ._historial le asigna su valor (parseado por supuesto)
-    if( localStorage.getItem('historial')){
-      this._historial = JSON.parse(localStorage.getItem('historial')!) || []
-    }
+  constructor(private http: HttpClient) {
+
+    /* ponemos el siguiente código dentro del constructor porque se ejecuta una única vez cuando
+    el servicio es llamado*/
+
+
+    /*asigna al array "_historial el contenido del key 'historial' del localStorage 
+    si viene null, asigna un array vació*/
+    this._historial = JSON.parse(localStorage.getItem('historial')!) || [];
+
+    //lo mismo que el de arriba
+    this.resultados = JSON.parse(localStorage.getItem('resultados')!) || [];
   }
 
 
@@ -45,10 +51,15 @@ export class GifsService {
       localStorage.setItem('historial', JSON.stringify(this._historial))
     }
 
+
+    //petición GET http
     this.http.get<SearchGifsResponse>(`https://api.giphy.com/v1/gifs/search?api_key=FLtmROL8EJML4jf0tud27tQWia4aLmeu&q=${query}&limit=10`)
       .subscribe((resp) => {
+        console.log('jejej');
+
         console.log(resp);
         this.resultados = resp.data;
+        localStorage.setItem('resultados', JSON.stringify(this.resultados))
 
       })
 
