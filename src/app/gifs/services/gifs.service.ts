@@ -20,7 +20,13 @@ export class GifsService {
 
 
   //inyectamos HttpClient
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { 
+    
+    // si en el localStorage existe la key 'historial', al array ._historial le asigna su valor (parseado por supuesto)
+    if( localStorage.getItem('historial')){
+      this._historial = JSON.parse(localStorage.getItem('historial')!) || []
+    }
+  }
 
 
 
@@ -34,6 +40,9 @@ export class GifsService {
 
       //asigna a this._historial el valor de los 10 primeros elementos eliminados
       this._historial = this._historial.splice(0, 10)
+
+      //mandamos el array _historial al localStorage en forma de JSON
+      localStorage.setItem('historial', JSON.stringify(this._historial))
     }
 
     this.http.get<SearchGifsResponse>(`https://api.giphy.com/v1/gifs/search?api_key=FLtmROL8EJML4jf0tud27tQWia4aLmeu&q=${query}&limit=10`)
