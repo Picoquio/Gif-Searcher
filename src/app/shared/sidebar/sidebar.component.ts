@@ -5,12 +5,19 @@ import { GifsService } from 'src/app/gifs/services/gifs.service';
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
 })
-export class SidebarComponent  {
+export class SidebarComponent {
 
-  constructor(private gifsService:GifsService) {} //importamos el service
+  constructor(private gifsService: GifsService) { } //importamos el service
 
-  get historieta () {
+  get historieta() {
     return this.gifsService.historial
+  }
+
+  buscar(termino: string) {
+    console.log(termino);
+    
+    this.gifsService.buscarGifs(termino)
+    
   }
 
 }
